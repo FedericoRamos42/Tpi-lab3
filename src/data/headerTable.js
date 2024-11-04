@@ -5,3 +5,13 @@ export const headerAppointmentAvailable = [
     { key: 'date', label: 'Fecha' },
     { key: 'status', label: 'Estado' },
 ];
+
+export const headerAdmin = [
+    { key: 'id', label: 'Id' },
+    { key: 'name', label: 'Nombre' },
+    { key: 'lastName', label: 'Apellido' },
+    { key: 'phoneNumber', label: 'Telefono' },
+    { key: 'email', label: 'Email' },
+    { key: 'role', label: 'Rol' },
+    { key: 'state', label: 'Estado' },
+]
