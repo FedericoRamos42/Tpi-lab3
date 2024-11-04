@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './components/Form/FormLogin';
-import EditProfile from './components/EditProfile'
+import EditProfile from './components/EditProfile';
+import Patient from './views/Patient';
 
 function App() {
 
@@ -13,7 +14,9 @@ function App() {
 
   const router = createBrowserRouter([
     { path: "/login", element: <Login onLogin={loginHandler} /> },
-    { path: "/Profile", element: <EditProfile /> },
+    { path: "/profile", element: <EditProfile /> },
+    { path: "/patient", element: <Patient /> },
+
     /*{ path: "/comments", element: (
       <Protected isSignedIn={isLogged}>
         </Protected></>

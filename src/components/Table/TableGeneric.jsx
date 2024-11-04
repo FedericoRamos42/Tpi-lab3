@@ -10,7 +10,7 @@ const TableGeneric = ({ data, headers, actions, loading, error }) => {
             <MDBTable align="middle" className="shadow-md rounded-lg">
                 <MDBTableHead className="bg-gray-100 text-gray-600 uppercase font-semibold">
                     <tr>
-                        {headers.map((header) => (
+                        {headers?.map((header) => (
                             <th scope='col' className="px-6 py-3 align-middle text-center" key={header.key}>{header.label}</th>
                         ))}
                         <th className='text-center'>Accion</th>
@@ -24,9 +24,9 @@ const TableGeneric = ({ data, headers, actions, loading, error }) => {
                             </td>
                         </tr>
                     ) : (
-                        data.map((row, rowIndex) => (
+                        data?.map((row, rowIndex) => (
                             <tr key={rowIndex} className='align-middle text-center'>
-                                {headers.map((header) => (
+                                {headers?.map((header) => (
                                     <td key={header.key}>
                                         {header.key === 'status' ? (
                                             <ButtonStatus status={row[header.key]} />
