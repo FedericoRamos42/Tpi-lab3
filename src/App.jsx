@@ -7,7 +7,7 @@ import Doctor from './views/Doctor.jsx';
 
 import Home from './components/Home.jsx';
 import Appointment from './views/Appointment.jsx';
-import Admin from './views/Admin.Jsx';
+import Admin from './views/Admin.jsx';
 
 function App() {
 
