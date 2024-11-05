@@ -4,9 +4,10 @@ import Login from './components/Form/FormLogin';
 import EditProfile from './components/EditProfile';
 import Patient from './views/Patient.jsx';
 import Doctor from './views/Doctor.jsx';
-import Admin from './views/Admin.jsx';
+
 import Home from './components/Home.jsx';
 import Appointment from './views/Appointment.jsx';
+import Admin from './views/Admin.Jsx';
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
     { path: "/patient", element: <Patient /> },
     { path: "/doctor", element: <Doctor /> },
     {path: "/admin" ,element: <Admin/> },
-    {path: "/admin" ,element: <Appointment/>}
+    {path: "/appointment" ,element: <Appointment/>}
 
 
 

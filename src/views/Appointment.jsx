@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerAppointment } from '../data/headerTable';
-
+import { ComboBoxGeneric } from '../components/ComboBox';
 
 const Appointment = () => {
     const user = JSON.parse(localStorage.getItem("clinica-token"));
@@ -34,8 +34,6 @@ const Appointment = () => {
         }
     };
 
-
-
     const assign = appointmentLocal.map((appointment) => [
         {
             icon: 'add',
@@ -52,7 +50,7 @@ const Appointment = () => {
              
                 const query = new URLSearchParams();
                 if (selectedSpecialty) query.append('idSpecialty', selectedSpecialty); 
-                if (selectedDate) query.append('date', selectedDate);
+                // if (selectedDate) query.append('date', selectedDate);
 
                 const response = await fetch(`http://localhost:5190/api/Appointment/Filtered?${query.toString()}`, {
                     method: 'GET',
@@ -76,12 +74,33 @@ const Appointment = () => {
         };
 
         fetchAppointments(); 
-    }, [selectedSpecialty, selectedDate]); 
+    }, [selectedSpecialty]); 
 
+    useEffect(() => {
+        const fetchSpecialties = async () => {
+            try {
+                const response = await fetch('http://localhost:5190/api/Specialty/GetAllSpecialties'); 
+                if (!response.ok) {
+                    throw new Error("Error fetching specialties");
+                }
+                const specialties = await response.json();
+                const formattedSpecialties = specialties.map(specialty => ({
+                    value: specialty.id,  
+                    label: specialty.name 
+                }));
+                setSpecialtyOptions(formattedSpecialties);
+            } catch (error) {
+                console.error("Error fetching specialties:", error);
+            }
+        };
+
+        fetchSpecialties(); 
+    }, []);
 
     return (
         <>
-       <TableGeneric data={appointmentLocal} headers={headerAppointment} actions={assign}/>
+            <ComboBoxGeneric label="Especialidad" options={specialtyOptions} onSelect={setSelectedSpecialty} />
+            <TableGeneric data={appointmentLocal} headers={headerAppointment} actions={assign}/>
         </>
     )
 
