@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from './components/Form/FormLogin';
 import EditProfile from './components/EditProfile';
-import Patient from './views/Patient';
-import Doctor from './views/Doctor';
-import Admin from './views/Admin.Jsx';
-
+import Patient from './views/Patient.jsx';
+import Doctor from './views/Doctor.jsx';
+import Admin from './views/Admin.jsx';
+import Home from './components/Home.jsx';
+import Appointment from './views/Appointment.jsx';
 
 function App() {
 
@@ -16,11 +17,14 @@ function App() {
   }
 
   const router = createBrowserRouter([
+    { path: "/", element: <Home /> },
     { path: "/login", element: <Login onLogin={loginHandler} /> },
     { path: "/profile", element: <EditProfile /> },
     { path: "/patient", element: <Patient /> },
     { path: "/doctor", element: <Doctor /> },
-    {path: "/admin" ,element: <Admin/>}
+    {path: "/admin" ,element: <Admin/> },
+    {path: "/admin" ,element: <Appointment/>}
+
 
 
     /*{ path: "/comments", element: (

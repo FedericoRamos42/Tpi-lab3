@@ -69,7 +69,7 @@ const Doctor = () => {
             }
         };
         fetchAppointments();
-    }, [user.id]);//
+    }, []);//
 
     const canceled = appointments.map((appointment) => [
         {
@@ -99,9 +99,9 @@ Doctor.propTypes = {
         token: PropTypes.string.isRequired,
     }),
 
-    appointments: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-    })).isRequired,
+    // appointments: PropTypes.arrayOf(PropTypes.shape({
+    //     id: PropTypes.string,
+    // })).isRequired,
 
     loading: PropTypes.bool,
 
