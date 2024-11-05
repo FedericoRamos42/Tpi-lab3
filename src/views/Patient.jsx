@@ -34,12 +34,13 @@ const Patient = () => {
                 setLoading(false);
             }
         };
+
         fetchAppointments();
     }, []);
 
     return (
         <div>
-            <TableGeneric data={reserved} headers={headerAppointmentAvailable} loading={loading} />
+            <TableGeneric data={reserved} headers={headerAppointmentAvailable} loading={loading} error={error} />
         </div>
     )
 }
