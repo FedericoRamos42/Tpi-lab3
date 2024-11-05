@@ -15,3 +15,11 @@ export const headerAdmin = [
     { key: 'role', label: 'Rol' },
     { key: 'state', label: 'Estado' },
 ]
+
+
+export const headerPatient = [
+    { key: 'patientName', label: 'Nombre' },
+    { key: 'date', label: 'Fecha' },
+    { key: 'time', label: 'Horario' },
+    { key: 'status', label: 'Estado' },
+]
