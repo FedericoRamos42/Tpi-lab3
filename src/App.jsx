@@ -16,6 +16,8 @@ function App() {
     { path: "/login", element: <Login onLogin={loginHandler} /> },
     { path: "/profile", element: <EditProfile /> },
     { path: "/patient", element: <Patient /> },
+    { path: "/doctor", element: <Doctor /> },
+
 
     /*{ path: "/comments", element: (
       <Protected isSignedIn={isLogged}>

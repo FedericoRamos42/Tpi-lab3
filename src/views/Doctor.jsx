@@ -1,13 +1,21 @@
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerPatient } from '../data/headerTable'
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 
 const Doctor = () => {
     const user = JSON.parse(localStorage.getItem("clinica-token"));
+    
+    if (!user || !user.id || !user.token) 
+    {
+        console.error("Usuario no encontrado o no válido.");
+        return;
+    }
 
     const [appointments, setAppointments] = useState([]);
-    // const [error, setError] = useState(false);
-    // const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleCancelAppointment = async (idAppointment) => {
         console.log(idAppointment)
@@ -55,24 +63,51 @@ const Doctor = () => {
                 setAppointments(data);
             } catch (error) {
                 console.error("Error fetching appointments:", error);
+                setError(true);
+            } finally {
+                setLoading(false);
             }
         };
         fetchAppointments();
-    }, []);
+    }, [user.id]);//
 
     const canceled = appointments.map((appointment) => [
         {
-          icon: 'ban',
-          color: 'danger',
-          onClick: () => handleCancelAppointment(appointment.id),
+            icon: 'ban',
+            color: 'danger',
+            onClick: () => handleCancelAppointment(appointment.id),
         },
-      ]);
+    ]);
 
     return (
         <>
-            <TableGeneric data={appointments} headers={headerPatient} actions={canceled} loading={loading} error={error}/>
+            <TableGeneric
+                data={appointments}
+                headers={headerPatient}
+                actions={canceled}
+                loading={loading}
+                error={error}
+            />
         </>
     )
 }
+
+Doctor.propTypes = {
+
+    user: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+    }),
+
+    appointments: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+    })).isRequired,
+
+    loading: PropTypes.bool,
+
+    error: PropTypes.bool,
+};
+
+
 
 export default Doctor
