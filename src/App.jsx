@@ -36,7 +36,7 @@ function App() {
     {
       path: "/Patient", element: (
         <Layout>
-          <Login />
+          <Patient />
         </Layout>
       )
     },

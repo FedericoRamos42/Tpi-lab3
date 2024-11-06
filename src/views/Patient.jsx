@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import TableGeneric from '../components/Table/TableGeneric';
 import { headerAppointmentAvailable } from '../data/headerTable';
 import { cancelAppointment, fetchReservedAppointments } from '../utils/patientUtils';
 import { useAuth } from '../components/Hooks/UseAuth';
+import TableGeneric from '../components/Table/TableGeneric';
+import EditProfile from '../components/EditProfile';
 
 const Patient = () => {
     const [error, setError] = useState(false);
@@ -60,8 +61,13 @@ const Patient = () => {
       ]);
 
     return (
-        <div>
-            <TableGeneric data={reserved} headers={headerAppointmentAvailable} loading={loading} error={error}  actions={action}/>
+        <div className='flex'>
+            <div className='w-1/4'>
+                <EditProfile />
+            </div>
+            <div className='w-3/4 p-6'>
+                <TableGeneric data={reserved} headers={headerAppointmentAvailable} loading={loading} error={error}  actions={action}/>
+            </div>
         </div>
     )
 }
