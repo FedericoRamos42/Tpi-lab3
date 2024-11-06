@@ -2,17 +2,22 @@ import React, { useState, useEffect } from 'react';
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerAdmin } from '../data/headerTable';
 import FormEdit from '../components/Form/FormEdit'
+import { useAuth } from '../components/Hooks/UseAuth';
+
 
 const Admin = () => {
-  const token = JSON.parse(localStorage.getItem("clinica-token"));
+  const user = JSON.parse(localStorage.getItem("clinica-token"));
   const [users, setUsers] = useState([]);
   const [stateFiltered, setStateFiltered] = useState(null);
   const [error, setErrorUsers] = useState(null);
   const [loading, setLoadingUsers] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
-
+  
+  useAuth(user, "Admin")
+  
   useEffect(() => {
+
     setLoadingUsers(true);
     setErrorUsers(null);
 
@@ -57,8 +62,8 @@ const Admin = () => {
         setLoadingUsers(false);
       })
       .catch((error) => {
-        setErrorUsers(error.message);
-        setLoadingUsers(false);
+        setErrorUsers(error);
+       
       });
   }, [stateFiltered]);
 
@@ -100,14 +105,14 @@ const Admin = () => {
 
   return (
     <>
-      <TableGeneric headers={headerAdmin} data={users} actions={actions} />
+      <TableGeneric headers={headerAdmin} data={users} actions={actions}  loading={loading} error={error}/>
 
       {isEditModalOpen && (
         <FormEdit
           open={isEditModalOpen}
           setOpen={setIsEditModalOpen}
           userEdit={userToEdit}
-          token={token.token}
+          token={user.token}
         />
       )}
     </>
