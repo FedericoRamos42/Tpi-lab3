@@ -3,7 +3,7 @@ import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-const FormLogin = ({ onLogin }) => {
+const FormLogin = (/* { onLogin } */) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({
@@ -44,7 +44,7 @@ const FormLogin = ({ onLogin }) => {
         }
 
         handleLogin(email, password);
-        onLogin();
+        /* onLogin(); */
         navigate("/");
     };
 

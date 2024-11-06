@@ -1,12 +1,13 @@
-import React from 'react'
+import React from 'react';
+import TopBar from './TopBar';
 
-const Layout = ({children}) => {
+const Layout = ({ children }) => {
   return (
     <div>
-      {/* aca va las navbar */}
-      
+      <TopBar />
+      {children}
     </div>
   )
 }
 
-export default Layout
+export default Layout;
