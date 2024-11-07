@@ -7,7 +7,7 @@ export default function App() {
      
 
       <section className=''>
-        <MDBContainer className='text-center text-md-start mt-0 p-4 mt-0'>
+        <MDBContainer className='text-center text-md-start mt-0 p-4'>
           <MDBRow className='mt-0'>
             <MDBCol md='3' lg='4' xl='3' className='mx-auto mb-4'>
               <h6 className='text-uppercase fw-bold mb-4'>

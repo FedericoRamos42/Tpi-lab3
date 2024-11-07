@@ -5,7 +5,7 @@ import Login from './components/Form/FormLogin';
 import FormRegister from './components/Form/FormRegister.jsx';
 import Patient from './views/Patient.jsx';
 import Doctor from './views/Doctor.jsx';
-
+import FormContact from './components/Form/FormContact.jsx';
 import Home from './components/Home.jsx';
 import Appointment from './views/Appointment.jsx';
 import Admin from './views/Admin.jsx';
@@ -54,13 +54,15 @@ function App() {
         </Layout>
       )
     },
-/*     {
-      path: "/contact",element:(
+
+     {
+      path: "/Contact",element:(
         <Layout>
-          <Contact/>
+          <FormContact/>
         </Layout>
       )
-    }, */
+    },
+
     {
       path: "/Admin",element:(
         <Layout>

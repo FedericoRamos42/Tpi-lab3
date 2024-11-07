@@ -5,7 +5,9 @@ const Layout = ({ children }) => {
   return (
     <div>
       <TopBar />
-      {children}
+      <div className='w-full min-h-screen'>
+        {children}
+      </div>
       <Footer/>
     </div>
   )
