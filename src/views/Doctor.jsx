@@ -1,14 +1,15 @@
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerPatient } from '../data/headerTable'
 import { useState, useEffect } from 'react';
+import EditProfile from '../components/EditProfile';
+//import { useAuth } from '../components/Hooks/UseAuth';
 import PropTypes from 'prop-types';
 
 
 const Doctor = () => {
     const user = JSON.parse(localStorage.getItem("clinica-token"));
-    
-    if (!user || !user.id || !user.token) 
-    {
+
+    if (!user || !user.id || !user.token) {
         console.error("Usuario no encontrado o no válido.");
         return;
     }
@@ -16,6 +17,9 @@ const Doctor = () => {
     const [appointments, setAppointments] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
+
+     // Validar rol de usuario
+     //useAuth(user, 'Doctor');
 
     const handleCancelAppointment = async (idAppointment) => {
         console.log(idAppointment)
@@ -81,13 +85,20 @@ const Doctor = () => {
 
     return (
         <>
-            <TableGeneric
-                data={appointments}
-                headers={headerPatient}
-                actions={canceled}
-                loading={loading}
-                error={error}
-            />
+            <div className='flex'>
+                <div className='w-1/4'>
+                    <EditProfile />
+                </div>
+                <div className='w-3/4 p-6'>
+                    <TableGeneric
+                        data={appointments}
+                        headers={headerPatient}
+                        actions={canceled}
+                        loading={loading}
+                        error={error}
+                    />
+                </div>
+            </div>
         </>
     )
 }

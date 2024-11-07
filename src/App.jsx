@@ -53,7 +53,24 @@ function App() {
           <Admin/>
         </Layout>
       )
+    },
+    {
+      path: "/Doctor",element:(
+        <Layout>
+          <Doctor/>
+        </Layout>
+      )
+    },
+    {
+      path: "/Appointment",element:(
+        <Layout>
+          <Appointment/>
+        </Layout>
+      )
     }
+
+
+
 /*     {
       path: "/comments", element: (
         <Protected>

@@ -20,12 +20,13 @@ const EditProfile = () => {
                     setError(false);
                     setLoading(true);
                     const response = await fetch(`http://localhost:5190/api/${user.role}/${user.id}`);
-
                     if (!response.ok) {
                         throw new Error('Error al obtener los datos.');
                     }
 
                     const data = await response.json();
+                    console.log('esta es la respuesta de la api'+ data)
+
                     setUserData(data);
                 } catch (error) {
                     setError(true);
