@@ -47,6 +47,13 @@ function App() {
         </Layout>
       )
     },
+    {
+      path: "/Admin",element:(
+        <Layout>
+          <Admin/>
+        </Layout>
+      )
+    }
 /*     {
       path: "/comments", element: (
         <Protected>

@@ -3,7 +3,8 @@ import TableGeneric from '../components/Table/TableGeneric';
 import { headerAdmin } from '../data/headerTable';
 import FormEdit from '../components/Form/FormEdit'
 import { useAuth } from '../components/Hooks/UseAuth';
-
+import EditProfile from '../components/EditProfile';
+import { ComboBoxGeneric } from '../components/ComboBox';
 
 const Admin = () => {
   const user = JSON.parse(localStorage.getItem("clinica-token"));
@@ -13,9 +14,9 @@ const Admin = () => {
   const [loading, setLoadingUsers] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
-  
+
   useAuth(user, "Admin")
-  
+
   useEffect(() => {
 
     setLoadingUsers(true);
@@ -63,7 +64,7 @@ const Admin = () => {
       })
       .catch((error) => {
         setErrorUsers(error);
-       
+
       });
   }, [stateFiltered]);
 
@@ -104,9 +105,21 @@ const Admin = () => {
   ]);
 
   return (
-    <>
-      <TableGeneric headers={headerAdmin} data={users} actions={actions}  loading={loading} error={error}/>
+    <div className='flex'>
 
+
+      <div className='w-1/4'>
+        <EditProfile />
+      </div>
+      <div className='w-3/4'>
+      <ComboBoxGeneric label="Estado"
+          options={[{ value: '', label: 'Todos los Estados' },
+          { value: 'true', label: 'Activo' },
+          { value: 'false', label: 'Inactivo' },]}
+          onSelect={setStateFiltered}
+        />
+        <TableGeneric headers={headerAdmin} data={users} actions={actions} loading={loading} error={error} />
+      </div>
       {isEditModalOpen && (
         <FormEdit
           open={isEditModalOpen}
@@ -115,7 +128,7 @@ const Admin = () => {
           token={user.token}
         />
       )}
-    </>
+    </div>
   );
 };
 
