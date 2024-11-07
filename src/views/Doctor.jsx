@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import EditProfile from '../components/EditProfile';
 //import { useAuth } from '../components/Hooks/UseAuth';
 import PropTypes from 'prop-types';
-
+import { cancelAppointment, fetchAppointmentDoctorById } from '../utils/doctorUtils';
 
 const Doctor = () => {
     const user = JSON.parse(localStorage.getItem("clinica-token"));
@@ -18,29 +18,13 @@ const Doctor = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
-     // Validar rol de usuario
-     //useAuth(user, 'Doctor');
+    // Validar rol de usuario
+    //useAuth(user, 'Doctor');
 
     const handleCancelAppointment = async (idAppointment) => {
-        console.log(idAppointment)
         try {
-            const response = await fetch(`http://localhost:5190/api/Appointment/Cancel/${idAppointment}`, {
-                method: 'PUT',
-                headers: {
-                    // 'Authorization': `Bearer ${user.token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ idAppointment }),
-            });
 
-            console.log(response)
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Esta es la respuesta del fetch', data);
+            await cancelAppointment(idAppointment)
 
         } catch (error) {
             console.error("Error solicitando el turno:", error);
@@ -51,19 +35,7 @@ const Doctor = () => {
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const response = await fetch(`http://localhost:5190/api/Appointment/GetByDoctorId/${user.id}`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${user.token}`,
-                        "Content-Type": "application/json"
-                    }
-                })
-                console.log(response)
-                if (!response.ok) {
-                    throw new Error("Error fetching appointments");
-                }
-                const data = await response.json();
-                console.log(data);
+                const data = await fetchAppointmentDoctorById(user)
                 setAppointments(data);
             } catch (error) {
                 console.error("Error fetching appointments:", error);
@@ -73,7 +45,7 @@ const Doctor = () => {
             }
         };
         fetchAppointments();
-    }, []);//
+    }, []);
 
     const canceled = appointments.map((appointment) => [
         {
