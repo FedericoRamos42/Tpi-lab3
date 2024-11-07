@@ -1,19 +1,20 @@
 import React from 'react';
-import { MDBContainer, MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarItem, MDBNavbarLink, MDBCollapse, MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
+import { MDBContainer, MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarItem, MDBNavbarLink, MDBCollapse, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem,MDBIcon } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
-import imgProfile from '../../assets/profile-default.jpg'
 
 const TopBar = () => {
-
     const user = JSON.parse(localStorage.getItem('clinica-token')) || null;
 
-
+    const handleLogout = () => {
+        localStorage.removeItem('clinica-token')
+    };
 
     return (
         <MDBNavbar expand='lg' light bgColor='light'>
             <MDBContainer fluid className='flex justify-between'>
                 <MDBNavbarBrand>
-                    <Link to={'/'} className='text-black'>
+                    <Link to={'/'} className='text-black '>
+                        <MDBIcon fas icon="user-md" size='xl' color='primary' className='pr-3'/>
                         Clinica UTN
                     </Link>
                 </MDBNavbarBrand>
@@ -44,11 +45,17 @@ const TopBar = () => {
                         </MDBNavbarItem>
                         <MDBNavbarItem>
                             {user ? (
-                                <MDBNavbarLink>
-                                    <Link to={`/${user?.role}`} className='text-black'>
+                                <MDBDropdown>
+                                    <MDBDropdownToggle tag='a' className='nav-link' role='button'>
                                         {user?.name} {user?.lastName}
-                                    </Link>
-                                </MDBNavbarLink>
+                                    </MDBDropdownToggle>
+                                    <MDBDropdownMenu>
+                                        <Link to={`/${user?.role}`}>
+                                            <MDBDropdownItem link>Ir al perfil</MDBDropdownItem>
+                                        </Link>
+                                        <MDBDropdownItem link onClick={handleLogout}>Cerrar sesion</MDBDropdownItem>
+                                    </MDBDropdownMenu>
+                                </MDBDropdown>
                             ) : (
                                 <MDBNavbarLink >
                                     <Link to={`/login`} className='text-black'>

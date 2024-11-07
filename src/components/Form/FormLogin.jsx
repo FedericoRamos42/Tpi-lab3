@@ -1,120 +1,106 @@
-import { useRef, useState } from "react";
-import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { MDBInput, MDBBtn, MDBRow, MDBCol, MDBContainer, MDBSpinner } from 'mdb-react-ui-kit';
+import { useNavigate, Link } from "react-router-dom";
 
-const FormLogin = (/* { onLogin } */) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({
-        email: false,
-        password: false,
-    });
-    const [error, setError] = useState(null);
-
-    const emailRef = useRef(null);
-    const passwordRef = useRef(null);
-
+const FormLogin = () => {
     const navigate = useNavigate();
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
 
-    const emailHandler = (event) => {
-        setEmail(event.target.value);
-        setErrors({ ...errors, email: false });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
     };
 
-    const passwordHandler = (event) => {
-        setPassword(event.target.value);
-        setErrors({ ...errors, password: false });
-    };
-
-    const loginHandler = (event) => {
-        event.preventDefault();
-        if (emailRef.current.value.length === 0) {
-            setErrors({ ...errors, email: true });
-            alert("EMAIL INVALIDO");
-            emailRef.current.focus();
-            return;
-        }
-
-        if (!password.length) {
-            setErrors({ ...errors, password: true });
-            alert("PASSWORD INVALIDO");
-            passwordRef.current.focus();
-            return;
-        }
-
-        handleLogin(email, password);
-        /* onLogin(); */
-        navigate("/");
-    };
-
-    const handleLogin = async (email, password) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            const res = await fetch("http://localhost:5190/api/Authentication/AuthenticateUser", {
+
+            setError(false);
+            setLoading(true);
+
+            const response = await fetch("http://localhost:5190/api/Authentication/AuthenticateUser", {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify(formData)
             });
 
-
-            if (!res.ok) {
-                throw res;
+            if (!response.ok) {
+                throw response
             }
 
-            const data = await res.json();
-            
-            localStorage.setItem("clinica-token", JSON.stringify(data));
-            console.log(data)
-            setError(null);
-            return true;
+            const data = await response.json();
 
+            localStorage.setItem("clinica-token", JSON.stringify(data));
+
+            navigate('/');
         } catch (error) {
-            setError(error.status);
-            return false;
+            setError(true);
+        } finally {
+            setLoading(false);
         }
     };
 
 
     return (
-        <Card className="mt-5 mx-3 p-3 px-5 shadow">
-            <Card.Body>
-                <Row>
-                    <h5>¡Bienvenido!</h5>
-                </Row>
-                <Form onSubmit={loginHandler}>
-                    <FormGroup className="mb-4">
-                        <Form.Control
-                            type="email"
-                            placeholder="Ingresar email"
-                            value={email}
-                            onChange={emailHandler}
-                            className={errors.email && "border border-danger border-3"}
-                            ref={emailRef}
+        <MDBContainer className="p-4 p-md-5 flex items-center justify-center min-w-100% min-h-screen">
+            <form onSubmit={handleSubmit} className="border border-gray-50 shadow-md p-12 rounded-lg w-full max-w-[700px]">
+
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <strong className="font-bold">Error:</strong>
+                        <span className="block sm:inline text-sm pl-2">No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo.</span>
+                    </div>
+                )}
+
+                <h3 className="mb-4 text-center font-semibold text-4xl">Ingresa con tu cuenta</h3>
+                <div className="w-full flex flex-col items-center justify-center">
+                    <MDBCol className="mb-4 w-[90%]">
+                        <MDBInput
+                            label="Email"
+                            type="text"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
                         />
-                    </FormGroup>
-                    <FormGroup className="mb-4">
-                        <Form.Control
+                    </MDBCol>
+                    <MDBCol className="mb-4 w-[90%]">
+                        <MDBInput
+                            label="Contraseña"
                             type="password"
-                            placeholder="Ingresar contraseña"
-                            value={password}
-                            onChange={passwordHandler}
-                            className={errors.password && "border border-danger border-3"}
-                            ref={passwordRef}
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
                         />
-                    </FormGroup>
-                    <Row>
-                        <Col />
-                        <Col md={6} className="d-flex justify-content-end">
-                            <Button variant="secondary" type="submit">
-                                Iniciar sesión
-                            </Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </Card.Body>
-        </Card>
+                    </MDBCol>
+
+                    <MDBBtn type="submit" color="primary" className="mt-4 w-[90%]" disabled={loading}>
+                        {loading ? (
+                            <MDBSpinner size='sm' />
+                        ) : (
+                            <p className="m-0 p-0">Iniciar sesion</p>
+                        )}
+                    </MDBBtn>
+                </div>
+
+                <p className="mt-6 text-center ">
+                    ¿No tenes cuenta? <Link to="/register">Registrate aquí</Link>
+                </p>
+            </form>
+        </MDBContainer>
     );
 };
 

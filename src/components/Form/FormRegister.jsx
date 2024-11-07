@@ -1,8 +1,11 @@
- import React, { useState } from 'react';
-import { MDBInput, MDBBtn, MDBRow, MDBCol, MDBContainer } from 'mdb-react-ui-kit';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { MDBInput, MDBBtn, MDBRow, MDBCol, MDBContainer, MDBSpinner } from 'mdb-react-ui-kit';
+import { Link, useNavigate } from 'react-router-dom';
 
 const FormRegister = () => {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         lastName: '',
@@ -41,6 +44,9 @@ const FormRegister = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
+            setError(false);
+
             const response = await fetch("http://localhost:5190/api/Patient/AddPatient", {
                 method: "POST",
                 headers: {
@@ -48,17 +54,30 @@ const FormRegister = () => {
                 },
                 body: JSON.stringify(formData)
             })
-            const data = await response.json();
-            console.log("Respuesta del servidor:", data);
 
+            if (!response.ok) {
+                throw response;
+            }
+
+            navigate('/login');
         } catch (error) {
-            console.log(error)
+            setError(true);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <MDBContainer className="p-4 p-md-5">
+        <MDBContainer className="p-4 p-md-5 min-h-screen">
             <form onSubmit={handleSubmit} className="border border-gray-50 shadow-md p-12 rounded-lg">
+
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <strong className="font-bold">Error:</strong>
+                        <span className="block sm:inline text-sm pl-2">No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo.</span>
+                    </div>
+                )}
+
                 <h3 className="mb-4 text-center font-semibold text-4xl">Registro de Usuario</h3>
                 <MDBRow>
                     <MDBCol md="6" className="mb-4">
@@ -178,8 +197,12 @@ const FormRegister = () => {
                         />
                     </MDBCol>
                 </MDBRow>
-                <MDBBtn type="submit" color="primary" className="mt-4 w-100">
-                    Registrarse
+                <MDBBtn type="submit" color="primary" className="mt-4 w-[90%]" disabled={loading}>
+                    {loading ? (
+                        <MDBSpinner size='sm' />
+                    ) : (
+                        <p className="m-0 p-0">Registrarse</p>
+                    )}
                 </MDBBtn>
                 <p className="mt-6 text-center ">
                     ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link>

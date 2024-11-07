@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from './components/Layout/Layout.jsx';
 import Login from './components/Form/FormLogin';
-import EditProfile from './components/EditProfile';
+import FormRegister from './components/Form/FormRegister.jsx';
 import Patient from './views/Patient.jsx';
 import Doctor from './views/Doctor.jsx';
 
@@ -47,6 +47,20 @@ function App() {
         </Layout>
       )
     },
+    {
+      path: "/register",element:(
+        <Layout>
+          <FormRegister />
+        </Layout>
+      )
+    },
+/*     {
+      path: "/contact",element:(
+        <Layout>
+          <Contact/>
+        </Layout>
+      )
+    }, */
     {
       path: "/Admin",element:(
         <Layout>

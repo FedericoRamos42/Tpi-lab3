@@ -60,7 +60,7 @@ const EditProfile = () => {
                     </MDBCard>
                 </MDBCol>
 
-                <FormEditProfile open={openEdit} setOpen={setOpenEdit} userEdit={userData} token={user.token} />
+                <FormEditProfile open={openEdit} setOpen={setOpenEdit} userEdit={userData} token={user?.token} />
 
                 <MDBCol className='max-w-[400px] '>
                     <MDBCard className="mb-4 border">
