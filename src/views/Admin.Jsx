@@ -5,6 +5,8 @@ import FormEdit from '../components/Form/FormEdit'
 import { useAuth } from '../components/Hooks/UseAuth';
 import EditProfile from '../components/EditProfile';
 import { ComboBoxGeneric } from '../components/ComboBox';
+import FormAddDoctor from '../components/Form/FormAddDoctor';
+import { fetchSpecialties } from '../utils/appointmentsUtils';
 
 const Admin = () => {
   const user = JSON.parse(localStorage.getItem("clinica-token"));
@@ -14,31 +16,37 @@ const Admin = () => {
   const [loading, setLoadingUsers] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
+  const [specialties, setSpecialties] = useState([]);
 
   useAuth(user, "Admin")
 
   useEffect(() => {
+    const fetchData = async () => {
+        try {
+            setLoadingUsers(true);
+            setErrorUsers(null);
 
-    setLoadingUsers(true);
-    setErrorUsers(null);
+            // Llama a fetchSpecialties y actualiza el estado
+            const specialtiesData = await fetchSpecialties();
+            setSpecialties(specialtiesData);
 
-    fetch('http://localhost:5190/api/User/')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Error fetching Users");
+            // Llama a la API para obtener los usuarios
+            const response = await fetch('http://localhost:5190/api/User/');
+            if (!response.ok) {
+                throw new Error("Error fetching Users");
+            }
+
+            const usersData = await response.json();
+            setUsers(usersData);
+        } catch (error) {
+            setErrorUsers(error.message);
+        } finally {
+            setLoadingUsers(false);
         }
-        return response.json();
-      })
-      .then((data) => {
-        setUsers(data);
-        setLoadingUsers(false);
-      })
-      .catch((error) => {
-        setErrorUsers(error.message);
-        setLoadingUsers(false);
-      });
-  }, []);
+    };
 
+    fetchData();
+}, []);
   useEffect(() => {
     setLoadingUsers(true);
     setErrorUsers(null);
@@ -106,9 +114,7 @@ const Admin = () => {
 
   return (
     <div className='flex'>
-
-
-      <div className='w-1/4'>
+      <div className='w-1/4'>      
         <EditProfile />
       </div>
       <div className='w-3/4'>
@@ -119,6 +125,7 @@ const Admin = () => {
           onSelect={setStateFiltered}
         />
         <TableGeneric headers={headerAdmin} data={users} actions={actions} loading={loading} error={error} />
+         <FormAddDoctor specialties={specialties} user={user}/>
       </div>
       {isEditModalOpen && (
         <FormEdit

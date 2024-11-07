@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerAppointment } from '../data/headerTable';
 import { ComboBoxGeneric } from '../components/ComboBox';
+import { fetchSpecialties } from '../utils/appointmentsUtils';
 
 const Appointment = () => {
     const user = JSON.parse(localStorage.getItem("clinica-token"));
@@ -77,13 +78,9 @@ const Appointment = () => {
     }, [selectedSpecialty]); 
 
     useEffect(() => {
-        const fetchSpecialties = async () => {
+        const fetchSpecialty = async () => {
             try {
-                const response = await fetch('http://localhost:5190/api/Specialty/GetAllSpecialties'); 
-                if (!response.ok) {
-                    throw new Error("Error fetching specialties");
-                }
-                const specialties = await response.json();
+                const specialties = await fetchSpecialties()
                 const formattedSpecialties = specialties.map(specialty => ({
                     value: specialty.id,  
                     label: specialty.name 
@@ -94,7 +91,7 @@ const Appointment = () => {
             }
         };
 
-        fetchSpecialties(); 
+        fetchSpecialty(); 
     }, []);
 
     return (
