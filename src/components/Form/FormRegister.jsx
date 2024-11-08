@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MDBInput, MDBBtn, MDBRow, MDBCol, MDBContainer, MDBSpinner } from 'mdb-react-ui-kit';
 import { Link, useNavigate } from 'react-router-dom';
+import ErrorForm from '../Error/ErrorForm';
 
 const FormRegister = () => {
     const navigate = useNavigate();
@@ -72,10 +73,7 @@ const FormRegister = () => {
             <form onSubmit={handleSubmit} className="border border-gray-50 shadow-md p-12 rounded-lg">
 
                 {error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                        <strong className="font-bold">Error:</strong>
-                        <span className="block sm:inline text-sm pl-2">No se pudo iniciar sesión. Por favor, verifica tus credenciales e inténtalo de nuevo.</span>
-                    </div>
+                    <ErrorForm />
                 )}
 
                 <h3 className="mb-4 text-center font-semibold text-4xl">Registro de Usuario</h3>
