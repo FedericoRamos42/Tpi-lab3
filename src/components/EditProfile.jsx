@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { MDBCard, MDBCardBody, MDBCardText, MDBCardImage, MDBBtn, MDBContainer, MDBRow, MDBCol, MDBSpinner } from 'mdb-react-ui-kit';
 import Error from './Error/Error';
 import  FormEditProfile  from './Form/FormEdit'
 import imgProfileDefault from '../assets/profile-default.jpg';
- 
-const EditProfile = () => {
-    const [userData, setUserData] = useState(null);
-    const [openEdit, setOpenEdit] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+import { AuthContext } from '../context/AuthContext';
 
-    const user = JSON.parse(localStorage.getItem('clinica-token')) || null;
+    const EditProfile = () => {
+        const [userData, setUserData] = useState(null);
+        const [openEdit, setOpenEdit] = useState(false);
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState(false);
+        const { user } = useContext(AuthContext)
 
-
-    useEffect(() => {
-        const fetchData = async () => {
+        useEffect(() => {
+            const fetchData = async () => {
             if (user) {
                 try {
                     setError(false);
@@ -25,7 +24,7 @@ const EditProfile = () => {
                     }
 
                     const data = await response.json();
-                    console.log('esta es la respuesta de la api'+ data)
+                    console.log("CONSOLE LOG USER:", JSON.stringify(data, null, 2));
 
                     setUserData(data);
                 } catch (error) {

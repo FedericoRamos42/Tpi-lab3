@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from './components/Layout/Layout.jsx';
 import Login from './components/Form/FormLogin';
@@ -10,14 +9,9 @@ import Home from './components/Home.jsx';
 import Appointment from './views/Appointment.jsx';
 import Admin from './views/Admin.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './components/routes/ProtectedRoute.jsx';
 
 function App() {
-
-  const [isLogged, setIsLogged] = useState(false);
-
-  const loginHandler = () => {
-    setIsLogged(true);
-  }
 
   const router = createBrowserRouter([
     {
@@ -27,6 +21,7 @@ function App() {
         </Layout>
       )
     },
+
     {
       path: "/login", element: (
         <Layout>
@@ -34,109 +29,70 @@ function App() {
         </Layout>
       )
     },
+
     {
-      path: "/Patient", element: (
-        <Layout>
-          <Patient />
-        </Layout>
-      )
-    },
-    {
-      path: "/login", element: (
-        <Layout>
-          <Login />
-        </Layout>
-      )
-    },
-    {
-      path: "/register",element:(
+      path: "/register", element: (
         <Layout>
           <FormRegister />
         </Layout>
       )
     },
 
-     {
-      path: "/Contact",element:(
-        <Layout>
-          <FormContact/>
-        </Layout>
-      )
-    },
-
     {
-      path: "/Admin",element:(
-        <Layout>
-          <Admin/>
-        </Layout>
-      )
-    },
-    {
-      path: "/Doctor",element:(
-        <Layout>
-          <Doctor/>
-        </Layout>
-      )
-    },
-    {
-      path: "/Appointment",element:(
-        <Layout>
-          <Appointment/>
-        </Layout>
-      )
-    }
-
-
-
-/*     {
-      path: "/comments", element: (
-        <Protected>
+      path: "/Patient", element: (
+        <ProtectedRoute>
           <Layout>
-            <Comments />
+            <Patient />
           </Layout>
-        </Protected>
+        </ProtectedRoute>
       )
-    }, */
-    /* {
-      path: "/book/:id", element: (
+    },
+
+    {
+      path: "/Admin", element: (
+        <ProtectedRoute>
+          <Layout>
+            <Admin />
+          </Layout>
+        </ProtectedRoute>
+      )
+    },
+
+    {
+      path: "/Doctor", element: (
+        <ProtectedRoute>
+          <Layout>
+            <Doctor />
+          </Layout>
+        </ProtectedRoute>
+      )
+    },
+
+    {
+      path: "/Appointment", element: (
+        <ProtectedRoute>
+          <Layout>
+            <Appointment />
+          </Layout>
+        </ProtectedRoute>
+
+      )
+    },
+
+    {
+      path: "/Contact", element: (
         <Layout>
-          <BookDetails />
+          <FormContact />
         </Layout>
       )
     },
-    {
-      path: "*", element: (
-        <Layout>
-          <NotFound />
-        </Layout>
-      )
-    } */
   ]);
-
-  /*   const router = createBrowserRouter([
-      { path: "/", element: <Home /> },
-      { path: "/login", element: <Login onLogin={loginHandler} /> },
-      { path: "/profile", element: <EditProfile /> },
-      { path: "/patient", element: <Patient /> },
-      { path: "/doctor", element: <Doctor /> },
-      {path: "/admin" ,element: <Admin/> },
-      {path: "/appointment" ,element: <Appointment/>}
-  
-  
-  
-      /*{ path: "/comments", element: (
-        <Protected isSignedIn={isLogged}>
-          </Protected></>
-        </Protected>
-      )},
-      //{ path: "*", element: <NotFound/>}
-    ]); */
 
   return (
     <>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   )
 }

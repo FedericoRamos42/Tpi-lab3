@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { MDBBtn, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBInput, MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import ErrorForm from '../Error/ErrorForm';
+import { AuthContext } from '../../context/AuthContext';
 
-const FormEditProfile = ({ open, setOpen, userEdit, token }) => {
+const FormEditProfile = ({ open, setOpen, userEdit }) => {
+    const { user } = useContext(AuthContext)
     const [error, setError] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -55,25 +57,33 @@ const FormEditProfile = ({ open, setOpen, userEdit, token }) => {
         }
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             setError(false);
+
+            const dataToSend = { ...formData };
+
+            if (userEdit.role !== 'Patient') {
+                delete dataToSend.address;
+            }
+
             const response = await fetch(`http://localhost:5190/api/${userEdit.role}/Update/${userEdit.id}`, {
                 method: "PUT",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${user?.token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(dataToSend)
             });
 
             const data = await response.json();
 
-            localStorage.setItem('clinica-token', JSON.stringify(data));
-
+            //localStorage.setItem('clinica-token', JSON.stringify(data));
             setOpen(false);
         } catch (error) {
+            console.log(error);
             setError(true);
         }
     };
@@ -87,7 +97,7 @@ const FormEditProfile = ({ open, setOpen, userEdit, token }) => {
                         {error && (
                             <ErrorForm />
                         )}
-                        
+
                         <MDBModalHeader>
                             <MDBModalTitle>Modificar Usuario</MDBModalTitle>
                         </MDBModalHeader>
