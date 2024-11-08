@@ -5,94 +5,58 @@ import FormEdit from '../components/Form/FormEdit'
 import { useAuth } from '../components/Hooks/UseAuth';
 import EditProfile from '../components/EditProfile';
 import { ComboBoxGeneric } from '../components/ComboBox';
-import FormAddDoctor from '../components/Form/FormAddDoctor';
-import { fetchSpecialties } from '../utils/appointmentsUtils';
+import { fetchDeleteUser, fetchFilteredUsers } from '../utils/adminUtils';
+// import FormAddDoctor from '../components/Form/FormAddDoctor';
+// import { fetchSpecialties } from '../utils/appointmentsUtils';
 
 const Admin = () => {
   const user = JSON.parse(localStorage.getItem("clinica-token"));
+  console.log("User from localStorage:", user);
   const [users, setUsers] = useState([]);
   const [stateFiltered, setStateFiltered] = useState(null);
   const [error, setErrorUsers] = useState(null);
   const [loading, setLoadingUsers] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userToEdit, setUserToEdit] = useState(null);
-  const [specialties, setSpecialties] = useState([]);
 
   useAuth(user, "Admin")
 
+  const handleDeleteAppointment = async (id) => {
+
+    try {
+      setErrorUsers(false)
+      await fetchDeleteUser(id)
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      setLoadingUsers(true)
+    }
+    catch {
+      setErrorUsers(true)
+
+    }
+    finally {
+      setLoadingUsers(false)
+    }
+  }
+
+
   useEffect(() => {
-    const fetchData = async () => {
-        try {
-            setLoadingUsers(true);
-            setErrorUsers(null);
-
-            // Llama a fetchSpecialties y actualiza el estado
-            const specialtiesData = await fetchSpecialties();
-            setSpecialties(specialtiesData);
-
-            // Llama a la API para obtener los usuarios
-            const response = await fetch('http://localhost:5190/api/User/');
-            if (!response.ok) {
-                throw new Error("Error fetching Users");
-            }
-
-            const usersData = await response.json();
-            setUsers(usersData);
-        } catch (error) {
-            setErrorUsers(error.message);
-        } finally {
-            setLoadingUsers(false);
-        }
-    };
-
-    fetchData();
-}, []);
-  useEffect(() => {
-    setLoadingUsers(true);
-    setErrorUsers(null);
-
-    const query = new URLSearchParams();
-    if (stateFiltered) query.append('state', stateFiltered);
-
-    fetch(`http://localhost:5190/api/User/Filtered?${query.toString()}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setUsers(data);
+    const fetchUsers = async () => {
+      const query = new URLSearchParams();
+      if (stateFiltered) query.append('state', stateFiltered);
+      try {
+        setErrorUsers(false);
+        setLoadingUsers(true);
+        const res = await fetchFilteredUsers(query);
+        setUsers(res);
+      } catch (error) {
+        setErrorUsers(true);
+      } finally {
         setLoadingUsers(false);
-      })
-      .catch((error) => {
-        setErrorUsers(error);
-
-      });
+      }
+    };
+    fetchUsers()
   }, [stateFiltered]);
 
-  const handleDeleteAppointment = (id) => {
-    fetch(`http://localhost:5190/api/User/Delete/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-      })
-      .catch((error) => {
-        console.error("Error eliminando un usuario:", error);
-      });
-  };
 
   const handleEditClick = (user) => {
     setUserToEdit(user);
@@ -114,18 +78,23 @@ const Admin = () => {
 
   return (
     <div className='flex'>
-      <div className='w-1/4'>      
+      <div className='w-1/4'>
         <EditProfile />
       </div>
       <div className='w-3/4'>
-      <ComboBoxGeneric label="Estado"
-          options={[{ value: '', label: 'Todos los Estados' },
-          { value: 'true', label: 'Activo' },
-          { value: 'false', label: 'Inactivo' },]}
-          onSelect={setStateFiltered}
-        />
-        <TableGeneric headers={headerAdmin} data={users} actions={actions} loading={loading} error={error} />
-         <FormAddDoctor specialties={specialties} user={user}/>
+        <div>
+          <ComboBoxGeneric label="Estado"
+            options={[{ value: '', label: 'Todos los Estados' },
+            { value: 'true', label: 'Activo' },
+            { value: 'false', label: 'Inactivo' },]}
+            onSelect={setStateFiltered}
+          />
+        </div>
+
+        < div className='max-h-[600px] overflow-auto'>
+          <TableGeneric headers={headerAdmin} data={users} actions={actions} loading={loading} error={error} />
+        </div>
+
       </div>
       {isEditModalOpen && (
         <FormEdit
