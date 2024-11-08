@@ -13,7 +13,7 @@ export const headerAdmin = [
     { key: 'phoneNumber', label: 'Telefono' },
     { key: 'email', label: 'Email' },
     { key: 'role', label: 'Rol' },
-    { key: 'state', label: 'Estado' },
+    { key: 'status', label: 'Estado' },
 ]
 
 

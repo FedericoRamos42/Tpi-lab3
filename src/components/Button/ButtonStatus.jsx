@@ -16,6 +16,14 @@ const ButtonStatus = ({ status }) => {
                 return (
                     <span className='p-2 text-sm bg-red-600 shadow-md text-white rounded-2xl'> Cancelado </span>
                 );
+            case 'Activo':
+                return (
+                    <span className='p-2 text-sm bg-green-600 shadow-md text-white rounded-2xl'> Activo </span>
+                );
+            case 'Inactivo':
+                return (
+                    <span className='p-2 text-sm bg-red-600 shadow-md text-white rounded-2xl'> Inactivo </span>
+                );
             default:
                 return <span> - </span>;
         }
@@ -25,7 +33,7 @@ const ButtonStatus = ({ status }) => {
 };
 
 ButtonStatus.propTypes = {
-    status: PropTypes.oneOf(['Available', 'Reserved', 'Cancel']).isRequired,
+    status: PropTypes.oneOf(['Available', 'Reserved', 'Cancel', 'Activo','Inactivo']).isRequired,
 };
 
 export default ButtonStatus
