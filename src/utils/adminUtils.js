@@ -1,8 +1,5 @@
 export const fetchFilteredUsers = async (query)=>{
 
-    // const query = new URLSearchParams();
-    // if (stateFiltered) query.append('state', stateFiltered);
-
     const response = await fetch(`http://localhost:5190/api/User/Filtered?${query.toString()}`, {
       method: 'GET',
       headers: {

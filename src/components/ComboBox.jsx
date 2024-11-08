@@ -5,6 +5,7 @@ export const ComboBoxGeneric = ({ label, options, onSelect }) => {
     const [selectedOption, setSelectedOption] = useState(label);
 
     const handleSelect = (value, label) => {
+        console.log("Opción seleccionada:", { value, label }); 
         setSelectedOption(label);
         onSelect(value);
     };

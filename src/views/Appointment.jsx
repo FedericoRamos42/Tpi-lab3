@@ -2,39 +2,76 @@ import { useState, useEffect } from 'react';
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerAppointment } from '../data/headerTable';
 import { ComboBoxGeneric } from '../components/ComboBox';
-import { fetchSpecialties } from '../utils/appointmentsUtils';
+import { fetchAssignAppointment, fetchFilteredAppointment, fetchSpecialties } from '../utils/appointmentsUtils';
 
 const Appointment = () => {
     const user = JSON.parse(localStorage.getItem("clinica-token"));
     
+    const [error, setError] = useState(false)
+    const [loading,setLoading] = useState(false)
     const [specialtyOptions, setSpecialtyOptions] = useState([]);
     const [appointmentLocal, setAppointmentLocal] = useState([]);
     //const [selectedDate, setSelectedDate] = useState('');
     const [selectedSpecialty, setSelectedSpecialty] = useState('');
     
     const handleAssignAppointment = async (idAppointment, idPatient) => {
-
-        const user = JSON.parse(localStorage.getItem("clinica-token"));
-
         try {
-            const response = await fetch(`http://localhost:5190/api/Appointment/AssignAppointment`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${user.token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ idAppointment, idPatient }),
-            });
-
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
+            setError(false);
+            setLoading(true);
+            await fetchAssignAppointment(idAppointment,idPatient)
         } catch (error) {
-            // console.error("Error solicitando el turno:", error);
+            setError(true)
+        } finally{
+            setLoading(false)
         }
     };
 
+    
+    useEffect(() => {
+        console.log("Especialidad seleccionada:", selectedSpecialty); 
+        const fetchAppointments = async () => {
+            try {
+                setError(false)
+                setLoading(true)
+                const query = new URLSearchParams();
+                if (selectedSpecialty) query.append('idSpecialty', selectedSpecialty); 
+                
+                const appointments = await fetchFilteredAppointment(query);
+                setAppointmentLocal(appointments); 
+                
+            } 
+            catch (error) {
+                setError(true)
+            }
+            finally{
+                setLoading(false)
+            }
+        };
+        fetchAppointments(); 
+    }, [selectedSpecialty]); 
+    
+    useEffect(() => {
+        const fetchSpecialty = async () => {
+            try {
+                setError(false)
+                setLoading(true)
+                const specialties = await fetchSpecialties()
+                const formattedSpecialties = specialties.map(specialty => ({
+                    value: specialty.id,  
+                    label: specialty.name 
+                }));
+                setSpecialtyOptions(formattedSpecialties);
+                console.log("Especialidades cargadas:", formattedSpecialties); 
+            } catch (error) {
+               setError(true)
+            }finally{
+                setLoading(false)
+            }
+        };
+        
+        fetchSpecialty(); 
+    }, []);
+    
     const assign = appointmentLocal.map((appointment) => [
         {
             icon: 'add',
@@ -43,61 +80,10 @@ const Appointment = () => {
         },
     ]);
 
-    useEffect(() => {
-        const fetchAppointments = async () => {
-            try {
-                console.log("Selected Specialty:", selectedSpecialty);
-                
-             
-                const query = new URLSearchParams();
-                if (selectedSpecialty) query.append('idSpecialty', selectedSpecialty); 
-                // if (selectedDate) query.append('date', selectedDate);
-
-                const response = await fetch(`http://localhost:5190/api/Appointment/Filtered?${query.toString()}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error("Error en el fetch");
-                }
-
-            
-                const appointments = await response.json();
-                setAppointmentLocal(appointments); 
-                console.log("Appointments fetched:", appointments);
-
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        };
-
-        fetchAppointments(); 
-    }, [selectedSpecialty]); 
-
-    useEffect(() => {
-        const fetchSpecialty = async () => {
-            try {
-                const specialties = await fetchSpecialties()
-                const formattedSpecialties = specialties.map(specialty => ({
-                    value: specialty.id,  
-                    label: specialty.name 
-                }));
-                setSpecialtyOptions(formattedSpecialties);
-            } catch (error) {
-                console.error("Error fetching specialties:", error);
-            }
-        };
-
-        fetchSpecialty(); 
-    }, []);
-
     return (
         <>
-            <ComboBoxGeneric label="Especialidad" options={specialtyOptions} onSelect={setSelectedSpecialty} />
-            <TableGeneric data={appointmentLocal} headers={headerAppointment} actions={assign}/>
+          <ComboBoxGeneric label="Especialidad" options={specialtyOptions} onSelect={setSelectedSpecialty} />
+            <TableGeneric data={appointmentLocal} headers={headerAppointment} actions={assign} error={error} loading={loading}/>
         </>
     )
 
