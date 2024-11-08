@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MDBBtn, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBInput, MDBRow, MDBCol } from 'mdb-react-ui-kit';
+import ErrorForm from '../Error/ErrorForm';
 
 const FormEditProfile = ({ open, setOpen, userEdit, token }) => {
-
+    const [error, setError] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         lastName: '',
@@ -57,6 +58,7 @@ const FormEditProfile = ({ open, setOpen, userEdit, token }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setError(false);
             const response = await fetch(`http://localhost:5190/api/${userEdit.role}/Update/${userEdit.id}`, {
                 method: "PUT",
                 headers: {
@@ -65,10 +67,14 @@ const FormEditProfile = ({ open, setOpen, userEdit, token }) => {
                 },
                 body: JSON.stringify(formData)
             });
+
             const data = await response.json();
-            console.log("Respuesta del servidor:", data);
+
+            localStorage.setItem('clinica-token', JSON.stringify(data));
+
+            setOpen(false);
         } catch (error) {
-            console.log(error);
+            setError(true);
         }
     };
 
@@ -77,6 +83,11 @@ const FormEditProfile = ({ open, setOpen, userEdit, token }) => {
             <MDBModalDialog centered size="lg">
                 <MDBModalContent>
                     <form onSubmit={handleSubmit}>
+
+                        {error && (
+                            <ErrorForm />
+                        )}
+                        
                         <MDBModalHeader>
                             <MDBModalTitle>Modificar Usuario</MDBModalTitle>
                         </MDBModalHeader>
