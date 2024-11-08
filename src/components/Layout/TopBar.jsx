@@ -1,14 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import { MDBContainer, MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarItem, MDBNavbarLink, MDBCollapse, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem,MDBIcon } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
 
 const TopBar = () => {
-    const user = JSON.parse(localStorage.getItem('clinica-token')) || null;
-
-    const handleLogout = () => {
-        localStorage.removeItem('clinica-token')
-    };
-
+    const { user, logout } = useContext(AuthContext);
     return (
         <MDBNavbar expand='lg' light bgColor='light'>
             <MDBContainer fluid className='flex justify-between'>
@@ -53,7 +49,7 @@ const TopBar = () => {
                                         <Link to={`/${user?.role}`}>
                                             <MDBDropdownItem link>Ir al perfil</MDBDropdownItem>
                                         </Link>
-                                        <MDBDropdownItem link onClick={handleLogout}>Cerrar sesion</MDBDropdownItem>
+                                        <MDBDropdownItem link onClick={logout}>Cerrar sesion</MDBDropdownItem>
                                     </MDBDropdownMenu>
                                 </MDBDropdown>
                             ) : (

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerAdmin } from '../data/headerTable';
 import FormEdit from '../components/Form/FormEdit'
@@ -10,8 +11,8 @@ import { fetchDeleteUser, fetchFilteredUsers } from '../utils/adminUtils';
 // import { fetchSpecialties } from '../utils/appointmentsUtils';
 
 const Admin = () => {
-  const user = JSON.parse(localStorage.getItem("clinica-token"));
-  console.log("User from localStorage:", user);
+  const {user} = useContext(AuthContext)
+  console.log("User from loc0alStorage:", user);
   const [users, setUsers] = useState([]);
   const [stateFiltered, setStateFiltered] = useState(null);
   const [error, setErrorUsers] = useState(null);

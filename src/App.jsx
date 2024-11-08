@@ -9,6 +9,7 @@ import FormContact from './components/Form/FormContact.jsx';
 import Home from './components/Home.jsx';
 import Appointment from './views/Appointment.jsx';
 import Admin from './views/Admin.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 
 function App() {
 
@@ -133,7 +134,9 @@ function App() {
 
   return (
     <>
+    <AuthProvider>
       <RouterProvider router={router} />
+    </AuthProvider>
     </>
   )
 }

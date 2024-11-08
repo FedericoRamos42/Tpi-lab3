@@ -1,8 +1,11 @@
+import React, { useContext } from 'react';
 import { useState } from "react";
 import { MDBInput, MDBBtn, MDBRow, MDBCol, MDBContainer, MDBSpinner } from 'mdb-react-ui-kit';
 import { useNavigate, Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const FormLogin = () => {
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -41,10 +44,10 @@ const FormLogin = () => {
             }
 
             const data = await response.json();
-
-            localStorage.setItem("clinica-token", JSON.stringify(data));
-
+            
+            login(data);
             navigate('/');
+
         } catch (error) {
             setError(true);
         } finally {
