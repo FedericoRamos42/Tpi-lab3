@@ -22,6 +22,7 @@ const Appointment = () => {
             setLoading(true);
             await fetchAssignAppointment(idAppointment,idPatient,user)
             console.log("turno asignado con exito")
+            await fetchAppointments();
         } catch (error) {
             setError(true)
         } finally{
@@ -30,25 +31,25 @@ const Appointment = () => {
     };
 
     
+    const fetchAppointments = async () => {
+        try {
+            setError(false)
+            setLoading(true)
+            const query = new URLSearchParams();
+            if (selectedSpecialty) query.append('idSpecialty', selectedSpecialty); 
+            if (selectedDate) query.append('date', selectedDate);
+            const appointments = await fetchFilteredAppointment(query);
+            setAppointmentLocal(appointments); 
+            
+        } 
+        catch (error) {
+            setError(true)
+        }
+        finally{
+            setLoading(false)
+        }
+    };
     useEffect(() => {
-        const fetchAppointments = async () => {
-            try {
-                setError(false)
-                setLoading(true)
-                const query = new URLSearchParams();
-                if (selectedSpecialty) query.append('idSpecialty', selectedSpecialty); 
-                if (selectedDate) query.append('date', selectedDate);
-                const appointments = await fetchFilteredAppointment(query);
-                setAppointmentLocal(appointments); 
-                
-            } 
-            catch (error) {
-                setError(true)
-            }
-            finally{
-                setLoading(false)
-            }
-        };
         fetchAppointments(); 
     }, [selectedSpecialty,selectedDate]); 
     
