@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { headerAppointmentAvailable } from '../data/headerTable';
 import { cancelAppointment, fetchReservedAppointments } from '../utils/patientUtils';
 import { useAuth } from '../components/Hooks/UseAuth';
 import TableGeneric from '../components/Table/TableGeneric';
 import EditProfile from '../components/EditProfile';
 import ConfirmAction from '../components/ConfirmAction';
-
+import { AuthContext } from '../context/AuthContext';
 const Patient = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -15,8 +15,7 @@ const Patient = () => {
 
     const messageConfirm = '¿Estás seguro de que deseas cancelar este turno?';
 
-    const user = JSON.parse(localStorage.getItem('clinica-token')) || null;
-
+    const {user} = useContext(AuthContext)
 
     useAuth(user, 'Patient');
 

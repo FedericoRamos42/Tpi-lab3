@@ -1,9 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 import { MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBInput, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit';
 
 const FormAddAppointment = ({ user, open, setOpen }) => {
-    const { user } = useContext(AuthContext);
     const [error, setError] = useState(false);
     const [formData, setFormData] = useState({
         date: '',
@@ -26,7 +24,7 @@ const FormAddAppointment = ({ user, open, setOpen }) => {
             const dataToSend = {
                 date: formData.date,
                 time: formData.time,
-                docotrId: user.id,
+                doctorId: user.id,
                 patientId: null   
             };
 
@@ -42,11 +40,10 @@ const FormAddAppointment = ({ user, open, setOpen }) => {
             if (!response.ok) {
                 throw new Error("Error al crear el turno");
             }
+            
+            console.log("turno generado con exito")
+            setOpen(false);
 
-            const data = await response.json();
-            console.log("Turno creado:", data);
-
-            setOpen(false); 
         } catch (error) {
             console.error("Error:", error);
             setError(true);

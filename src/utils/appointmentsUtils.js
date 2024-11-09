@@ -27,7 +27,8 @@ export const fetchFilteredAppointment = async(query) =>{
     return appointments
 }
 
-export const fetchAssignAppointment = async(idAppointment,idPatient)=>{
+export const fetchAssignAppointment = async(idAppointment, idPatient, user)=>{
+    console.log(idAppointment,idPatient)
     const response = await fetch(`http://localhost:5190/api/Appointment/AssignAppointment`, {
         method: 'PUT',
         headers: {
@@ -36,7 +37,7 @@ export const fetchAssignAppointment = async(idAppointment,idPatient)=>{
         },
         body: JSON.stringify({ idAppointment, idPatient }),
     });
-
+    console.log(response)
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }

@@ -4,10 +4,14 @@ import { useState, useEffect, useContext } from 'react';
 import EditProfile from '../components/EditProfile';
 import { useAuth } from '../components/Hooks/UseAuth';
 import PropTypes from 'prop-types';
+import { MDBBtn } from 'mdb-react-ui-kit';
 import { cancelAppointment, fetchAppointmentDoctorById } from '../utils/doctorUtils';
 import { AuthContext } from '../context/AuthContext';
+import FormAddAppointment from '../components/Form/FormEditAppointment';
+
 const Doctor = () => {
     const { user } = useContext(AuthContext)
+    const [open, setOpen] = useState(false)
 
     if (!user || !user.id || !user.token) {
         console.error("Usuario no encontrado o no válido.");
@@ -69,6 +73,10 @@ const Doctor = () => {
                         error={error}
                     />
                 </div>
+                <div>
+                    <MDBBtn onClick={()=>setOpen(true)}>Agregar turno</MDBBtn>
+                </div>
+                    <FormAddAppointment open={open} setOpen={setOpen}  user={user}/>
             </div>
         </>
     )
