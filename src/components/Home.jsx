@@ -15,8 +15,8 @@ export default function Home() {
         <img src={imgMain1} className={`${imageClasses}`} alt="..." />
         <div className={overlayClasses}></div>
         <MDBCarouselCaption>
-          <h5>First slide label</h5>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <h5>Atención Médica Integral</h5>
+          <p>Ofrecemos una amplia gama de servicios médicos para cuidar de tu salud y la de tu familia.</p>
         </MDBCarouselCaption>
       </MDBCarouselItem>
 
@@ -24,8 +24,8 @@ export default function Home() {
         <img src={imgMain2} className={`${imageClasses}`} alt="..." />
         <div className={overlayClasses}></div>
         <MDBCarouselCaption>
-          <h5>Second slide label</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <h5>Tecnología de Vanguardia</h5>
+          <p>Equipados con la última tecnología para brindar diagnósticos precisos y atención de calidad.</p>
         </MDBCarouselCaption>
       </MDBCarouselItem>
 
@@ -33,8 +33,8 @@ export default function Home() {
         <img src={imgMain3} className={`${imageClasses}`} alt="..." />
         <div className={overlayClasses}></div>
         <MDBCarouselCaption>
-          <h5>Third slide label</h5>
-          <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+          <h5>Profesionales a tu Servicio</h5>
+          <p>Un equipo de expertos comprometidos con tu bienestar en cada consulta y tratamiento.</p>
         </MDBCarouselCaption>
       </MDBCarouselItem>
     </MDBCarousel>

@@ -2,23 +2,17 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import TableGeneric from '../components/Table/TableGeneric';
 import { headerAdmin } from '../data/headerTable';
-import FormEdit from '../components/Form/FormEdit'
 import { useAuth } from '../components/Hooks/UseAuth';
 import EditProfile from '../components/EditProfile';
 import { ComboBoxGeneric } from '../components/ComboBox';
 import { fetchDeleteUser, fetchFilteredUsers } from '../utils/adminUtils';
-// import FormAddDoctor from '../components/Form/FormAddDoctor';
-// import { fetchSpecialties } from '../utils/appointmentsUtils';
 
 const Admin = () => {
-  const {user} = useContext(AuthContext)
-  console.log("User from loc0alStorage:", user);
+  const { user } = useContext(AuthContext)
   const [users, setUsers] = useState([]);
   const [stateFiltered, setStateFiltered] = useState(null);
   const [error, setErrorUsers] = useState(null);
   const [loading, setLoadingUsers] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [userToEdit, setUserToEdit] = useState(null);
 
   useAuth(user, "Admin")
 
@@ -47,7 +41,9 @@ const Admin = () => {
       try {
         setErrorUsers(false);
         setLoadingUsers(true);
+
         const res = await fetchFilteredUsers(query);
+
         setUsers(res);
       } catch (error) {
         setErrorUsers(true);
@@ -55,24 +51,15 @@ const Admin = () => {
         setLoadingUsers(false);
       }
     };
+    
     fetchUsers()
   }, [stateFiltered]);
 
-
-  const handleEditClick = (user) => {
-    setUserToEdit(user);
-    setIsEditModalOpen(true);
-  };
-
   const actions = users.map((user) => [
-    {
-      icon: 'edit',
-      color: 'primary',
-      onClick: () => handleEditClick(user),
-    },
     {
       icon: 'ban',
       color: 'danger',
+      disable: user.status === 'Inactivo',
       onClick: () => handleDeleteAppointment(user.id),
     },
   ]);
@@ -95,16 +82,7 @@ const Admin = () => {
         < div className='max-h-[600px] overflow-auto'>
           <TableGeneric headers={headerAdmin} data={users} actions={actions} loading={loading} error={error} />
         </div>
-
       </div>
-      {isEditModalOpen && (
-        <FormEdit
-          open={isEditModalOpen}
-          setOpen={setIsEditModalOpen}
-          userEdit={userToEdit}
-          token={user.token}
-        />
-      )}
     </div>
   );
 };

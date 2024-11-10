@@ -22,6 +22,7 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
 
     useEffect(() => {
         if (userEdit) {
+            console.log(userEdit)
             setFormData({
                 name: userEdit.name || '',
                 lastName: userEdit.lastName || '',
@@ -80,10 +81,8 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
 
             const data = await response.json();
 
-            //localStorage.setItem('clinica-token', JSON.stringify(data));
             setOpen(false);
         } catch (error) {
-            console.log(error);
             setError(true);
         }
     };
@@ -111,7 +110,6 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
                                         value={formData.name}
                                         placeholder="Nombre"
                                         onChange={handleChange}
-                                        required
                                     />
                                 </MDBCol>
                                 <MDBCol md="6">
@@ -122,7 +120,6 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
                                         value={formData.lastName}
                                         placeholder="Apellido"
                                         onChange={handleChange}
-                                        required
                                     />
                                 </MDBCol>
                             </MDBRow>
@@ -136,7 +133,6 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
                                         value={formData.email}
                                         placeholder="Correo Electrónico"
                                         onChange={handleChange}
-                                        required
                                     />
                                 </MDBCol>
                             </MDBRow>
@@ -150,7 +146,6 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
                                         value={formData.phoneNumber}
                                         placeholder="Número de Teléfono"
                                         onChange={handleChange}
-                                        required
                                     />
                                 </MDBCol>
                             </MDBRow>
@@ -163,7 +158,6 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
                                         name="dateOfBirth"
                                         value={formData.dateOfBirth}
                                         onChange={handleChange}
-                                        required
                                     />
                                 </MDBCol>
                             </MDBRow>

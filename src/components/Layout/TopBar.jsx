@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { MDBContainer, MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarItem, MDBNavbarLink, MDBCollapse, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem,MDBIcon } from 'mdb-react-ui-kit';
+import { MDBContainer, MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavbarItem, MDBNavbarLink, MDBCollapse, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
 import { Link } from 'react-router-dom';
 
 const TopBar = () => {
@@ -8,35 +8,27 @@ const TopBar = () => {
     return (
         <MDBNavbar expand='lg' light bgColor='light'>
             <MDBContainer fluid className='flex justify-between'>
-                <MDBNavbarBrand>
-                    <Link to={'/'} className='text-black '>
-                        <MDBIcon fas icon="user-md" size='xl' color='primary' className='pr-3'/>
-                        Clinica UTN
-                    </Link>
+                <MDBNavbarBrand tag={Link} to={'/'}>
+                    <MDBIcon fas icon="user-md" size='xl' color='primary' className='pr-3' />
+                    Clinica UTN
                 </MDBNavbarBrand>
                 <MDBCollapse navbar className='flex justify-end'>
                     <MDBNavbarNav >
                         <MDBNavbarItem>
-                            <MDBNavbarLink>
-                                <Link to={'/'} className='text-black'>
-                                    Inicio
-                                </Link>
+                            <MDBNavbarLink tag={Link} to={'/'}>
+                                Inicio
                             </MDBNavbarLink>
                         </MDBNavbarItem>
                         {user && user?.role === 'Patient' && (
                             <MDBNavbarItem>
-                                <MDBNavbarLink>
-                                    <Link to={'/appointment'} className='text-black'>
-                                        Solicitar turno
-                                    </Link>
+                                <MDBNavbarLink tag={Link} to={'/appointment'}>
+                                    Solicitar turno
                                 </MDBNavbarLink>
                             </MDBNavbarItem>
                         )}
                         <MDBNavbarItem>
-                            <MDBNavbarLink>
-                                <Link to={'/contact'} className='text-black'>
-                                    Contacto
-                                </Link>
+                            <MDBNavbarLink tag={Link} to={'/contact'}>
+                                Contacto
                             </MDBNavbarLink>
                         </MDBNavbarItem>
                         <MDBNavbarItem>
@@ -46,17 +38,17 @@ const TopBar = () => {
                                         {user?.name} {user?.lastName}
                                     </MDBDropdownToggle>
                                     <MDBDropdownMenu>
-                                        <Link to={`/${user?.role}`}>
-                                            <MDBDropdownItem link>Ir al perfil</MDBDropdownItem>
-                                        </Link>
-                                        <MDBDropdownItem link onClick={logout}>Cerrar sesion</MDBDropdownItem>
+                                        <MDBDropdownItem link tag={Link} to={`/${user?.role}`} childTag='button'>
+                                            Ir al perfil
+                                        </MDBDropdownItem>
+                                        <MDBDropdownItem link onClick={logout} childTag='button'>
+                                            Cerrar sesión
+                                        </MDBDropdownItem>
                                     </MDBDropdownMenu>
                                 </MDBDropdown>
                             ) : (
-                                <MDBNavbarLink >
-                                    <Link to={`/login`} className='text-black'>
-                                        Ingresar
-                                    </Link>
+                                <MDBNavbarLink tag={Link} to={`/login`} >
+                                    Ingresar
                                 </MDBNavbarLink>
                             )}
                         </MDBNavbarItem>

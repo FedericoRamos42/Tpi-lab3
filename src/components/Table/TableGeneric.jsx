@@ -7,7 +7,7 @@ import Error from '../Error/Error';
 const TableGeneric = ({ data, headers, actions, loading, error }) => {
     return (
         <div>
-            <MDBTable align="middle" className="shadow-md rounded-lg">
+            <MDBTable align="middle" className="shadow-md border border-gray-50 rounded-lg">
                 <MDBTableHead className="bg-gray-100 text-gray-600 uppercase font-semibold">
                     <tr>
                         {headers.map((header) => (
@@ -47,6 +47,7 @@ const TableGeneric = ({ data, headers, actions, loading, error }) => {
                                             key={index}
                                             color={action.color || 'primary'}
                                             size='sm'
+                                            disabled={action.disable || false}
                                             onClick={action.onClick}
                                             className='mx-1'
                                         >
@@ -72,6 +73,7 @@ TableGeneric.propTypes = {
     actions: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
         color: PropTypes.string,
         icon: PropTypes.string.isRequired,
+        disable: PropTypes.bool,
         onClick: PropTypes.func.isRequired
     }))),
     loading: PropTypes.bool,

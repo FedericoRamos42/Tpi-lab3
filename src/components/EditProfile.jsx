@@ -24,7 +24,6 @@ import { AuthContext } from '../context/AuthContext';
                     }
 
                     const data = await response.json();
-                    console.log("CONSOLE LOG USER:", JSON.stringify(data, null, 2));
 
                     setUserData(data);
                 } catch (error) {

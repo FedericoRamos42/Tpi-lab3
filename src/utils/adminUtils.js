@@ -1,5 +1,4 @@
 export const fetchFilteredUsers = async (query)=>{
-
     const response = await fetch(`http://localhost:5190/api/User/Filtered?${query.toString()}`, {
       method: 'GET',
       headers: {
@@ -22,9 +21,9 @@ export const fetchDeleteUser = async (id)=>{
       headers: {
         'Content-Type': 'application/json',
       },
-    })
+    });
+
     if (!response.ok){
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
 }

@@ -21,7 +21,6 @@ const FormContact = () => {
 
         emailjs.send(serviceID, templateID, formData, userID)
             .then((response) => {
-                console.log('Email enviado:', response.status, response.text);
                 alert('Tu mensaje ha sido enviado exitosamente');
                 setFormData({ from_name: '', to_email: '', message: '' });
             })

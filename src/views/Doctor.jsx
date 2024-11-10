@@ -12,12 +12,6 @@ import FormAddAppointment from '../components/Form/FormEditAppointment';
 const Doctor = () => {
     const { user } = useContext(AuthContext)
     const [open, setOpen] = useState(false)
-
-    if (!user || !user.id || !user.token) {
-        console.error("Usuario no encontrado o no válido.");
-        return;
-    }
-
     const [appointments, setAppointments] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -30,7 +24,7 @@ const Doctor = () => {
             await cancelAppointment(idAppointment)
             fetchAppointments();
         } catch (error) {
-            console.error("Error solicitando el turno:", error);
+
         }
 
     };
@@ -40,7 +34,6 @@ const Doctor = () => {
             const data = await fetchAppointmentDoctorById(user)
             setAppointments(data);
         } catch (error) {
-            console.error("Error fetching appointments:", error);
             setError(true);
         } finally {
             setLoading(false);
@@ -64,7 +57,10 @@ const Doctor = () => {
                 <div className='w-1/4'>
                     <EditProfile />
                 </div>
-                <div className='w-3/4 p-6'>
+                <div className='w-3/4 p-6 flex flex-col'>
+                    <div className='w-full flex items-center mr-6 mb-3 justify-end'>
+                        <MDBBtn onClick={() => setOpen(true)}>Agregar turno</MDBBtn>
+                    </div>
                     <TableGeneric
                         data={appointments}
                         headers={headerPatient}
@@ -73,10 +69,7 @@ const Doctor = () => {
                         error={error}
                     />
                 </div>
-                <div>
-                    <MDBBtn onClick={()=>setOpen(true)}>Agregar turno</MDBBtn>
-                </div>
-                    <FormAddAppointment open={open} setOpen={setOpen}  user={user}/>
+                <FormAddAppointment open={open} setOpen={setOpen} user={user} />
             </div>
         </>
     )

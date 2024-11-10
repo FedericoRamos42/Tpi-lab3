@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { headerAppointmentAvailable } from '../data/headerTable';
 import { cancelAppointment, fetchReservedAppointments } from '../utils/patientUtils';
 import { useAuth } from '../components/Hooks/UseAuth';
@@ -15,7 +15,7 @@ const Patient = () => {
 
     const messageConfirm = '¿Estás seguro de que deseas cancelar este turno?';
 
-    const {user} = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
     useAuth(user, 'Patient');
 
@@ -46,7 +46,7 @@ const Patient = () => {
         },
     ]);
 
-    
+
     const handleCancelAppoitment = async () => {
         try {
             setError(false);
@@ -73,12 +73,14 @@ const Patient = () => {
 
     return (
         <div className='flex'>
-            <ConfirmAction openConfirm={openConfirm} message={messageConfirm} action={handleCancelAppoitment} setOpenConfirm={setOpenConfirm}/>
+            <ConfirmAction openConfirm={openConfirm} message={messageConfirm} action={handleCancelAppoitment} setOpenConfirm={setOpenConfirm} />
             <div className='w-1/4'>
                 <EditProfile />
             </div>
             <div className='w-3/4 p-6'>
-                <TableGeneric data={reserved} headers={headerAppointmentAvailable} loading={loading} error={error} actions={action} />
+                <div className="max-h-[800px] overflow-auto w-full">
+                    <TableGeneric data={reserved} headers={headerAppointmentAvailable} loading={loading} error={error} actions={action}  />
+                </div>
             </div>
         </div>
     )

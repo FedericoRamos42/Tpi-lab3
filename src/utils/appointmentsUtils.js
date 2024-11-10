@@ -10,7 +10,6 @@ export const fetchSpecialties = async () => {
 
 export const fetchFilteredAppointment = async(query) =>{
     
-    console.log("URL de la solicitud:", `http://localhost:5190/api/Appointment/Filtered?${query.toString()}`);
     const response = await fetch(`http://localhost:5190/api/Appointment/Filtered?${query.toString()}`, {
         method: 'GET',
         headers: {
@@ -28,7 +27,7 @@ export const fetchFilteredAppointment = async(query) =>{
 }
 
 export const fetchAssignAppointment = async(idAppointment, idPatient, user)=>{
-    console.log(idAppointment,idPatient)
+
     const response = await fetch(`http://localhost:5190/api/Appointment/AssignAppointment`, {
         method: 'PUT',
         headers: {
@@ -37,7 +36,7 @@ export const fetchAssignAppointment = async(idAppointment, idPatient, user)=>{
         },
         body: JSON.stringify({ idAppointment, idPatient }),
     });
-    console.log(response)
+
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }

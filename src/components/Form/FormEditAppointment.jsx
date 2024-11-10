@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBInput, MDBRow, MDBCol, MDBBtn } from 'mdb-react-ui-kit';
+import ErrorForm from '../Error/ErrorForm';
 
 const FormAddAppointment = ({ user, open, setOpen }) => {
     const [error, setError] = useState(false);
@@ -41,7 +42,6 @@ const FormAddAppointment = ({ user, open, setOpen }) => {
                 throw new Error("Error al crear el turno");
             }
             
-            console.log("turno generado con exito")
             setOpen(false);
 
         } catch (error) {
@@ -57,9 +57,7 @@ const FormAddAppointment = ({ user, open, setOpen }) => {
                     <form onSubmit={handleSubmit}>
 
                         {error && (
-                            <div className="alert alert-danger">
-                                Hubo un error al crear el turno. Por favor, intenta nuevamente.
-                            </div>
+                            <ErrorForm />
                         )}
 
                         <MDBModalHeader>

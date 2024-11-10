@@ -49,7 +49,6 @@ const FormAddDoctor = ({ specialties, user }) => {
         try {
             setLoading(true);
             setError(false);
-            console.log(formData)
             const response = await fetch("http://localhost:5190/api/Doctor/AddDoctor", {
                 method: "POST",
                 headers: {
