@@ -28,11 +28,9 @@ const Admin = () => {
       setLoadingUsers(true)
       await fetchDeleteUser(id)
       await fetchUsers()
-      // setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
     }
     catch {
       setErrorUsers(true)
-
     }
     finally {
       setLoadingUsers(false)
