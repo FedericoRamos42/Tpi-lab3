@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import TableGeneric from '../components/Table/TableGeneric';
 import { headerAdmin } from '../data/headerTable';
 import { useAuth } from '../components/Hooks/UseAuth';
-import EditProfile from '../components/EditProfile';
+import { MDBBtn } from 'mdb-react-ui-kit';
 import { ComboBoxGeneric } from '../components/ComboBox';
 import { fetchDeleteUser, fetchFilteredUsers } from '../utils/adminUtils';
+import { fetchSpecialties } from '../utils/appointmentsUtils';
+import EditProfile from '../components/EditProfile';
+import TableGeneric from '../components/Table/TableGeneric';
+import FormAddDoctor from '../components/Form/FormAddDoctor';
 
 const Admin = () => {
   const { user } = useContext(AuthContext)
@@ -13,6 +16,8 @@ const Admin = () => {
   const [stateFiltered, setStateFiltered] = useState(null);
   const [error, setErrorUsers] = useState(null);
   const [loading, setLoadingUsers] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
+  const [specialties, setSpecialties] = useState([]);
 
   useAuth(user, "Admin")
 
@@ -33,6 +38,17 @@ const Admin = () => {
     }
   }
 
+  const fetchSpecialty = async () => {
+    try {
+      const response = await fetchSpecialties();
+
+      setSpecialties(response);
+    } catch (error) { }
+  };
+
+  useEffect(() => {
+    fetchSpecialty();
+  }, [])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -51,8 +67,10 @@ const Admin = () => {
         setLoadingUsers(false);
       }
     };
-    
-    fetchUsers()
+
+
+
+    fetchUsers();
   }, [stateFiltered]);
 
   const actions = users.map((user) => [
@@ -70,19 +88,23 @@ const Admin = () => {
         <EditProfile />
       </div>
       <div className='w-3/4'>
-        <div>
+        <div className='flex items-center justify-end mr-4'>
           <ComboBoxGeneric label="Estado"
             options={[{ value: '', label: 'Todos los Estados' },
             { value: 'true', label: 'Activo' },
             { value: 'false', label: 'Inactivo' },]}
             onSelect={setStateFiltered}
           />
+          <MDBBtn onClick={() => setOpenCreate(true)}>
+            Crear Doctor
+          </MDBBtn>
         </div>
 
         < div className='max-h-[600px] overflow-auto'>
           <TableGeneric headers={headerAdmin} data={users} actions={actions} loading={loading} error={error} />
         </div>
       </div>
+      <FormAddDoctor open={openCreate} setOpen={setOpenCreate} specialties={specialties} />
     </div>
   );
 };

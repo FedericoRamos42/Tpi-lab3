@@ -58,7 +58,9 @@ const Appointment = () => {
             try {
                 setError(false)
                 setLoading(true)
+                
                 const specialties = await fetchSpecialties()
+
                 const formattedSpecialties = specialties.map(specialty => ({
                     value: specialty.id,
                     label: specialty.name

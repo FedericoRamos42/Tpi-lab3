@@ -6,8 +6,8 @@ import imgMain3 from '../assets/Main3.jpg';
 
 
 export default function Home() {
-  const imageClasses = 'w-full h-[700px] object-cover'; // Ajusta la altura y otras propiedades aquí
-  const overlayClasses = 'absolute inset-0 bg-black opacity-40'; // Superposición de contraste oscuro
+  const imageClasses = 'w-full h-[700px] object-cover';
+  const overlayClasses = 'absolute inset-0 bg-black opacity-40';
 
   return (
     <MDBCarousel showIndicators showControls fade>
