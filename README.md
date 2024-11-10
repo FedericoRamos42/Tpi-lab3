@@ -29,5 +29,6 @@ médicos.</p>
 </ul>
 
 <p>El repositorio que contiene a la API es el siguiente  https://github.com/FedericoRamos42/WebApiClinica</p>
+<p>Correr la api en localhost:5173</p>
 
 
