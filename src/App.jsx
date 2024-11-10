@@ -7,7 +7,7 @@ import Doctor from './views/Doctor.jsx';
 import FormContact from './components/Form/FormContact.jsx';
 import Home from './components/Home.jsx';
 import Appointment from './views/Appointment.jsx';
-import Admin from './views/Admin.jsx';
+import SysAdmin from './views/SysAdmin.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import ProtectedRoute from './components/routes/ProtectedRoute.jsx';
 
@@ -52,7 +52,7 @@ function App() {
       path: "/Admin", element: (
         <ProtectedRoute>
           <Layout>
-            <Admin />
+            <SysAdmin />
           </Layout>
         </ProtectedRoute>
       )

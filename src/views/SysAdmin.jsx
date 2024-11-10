@@ -21,13 +21,14 @@ const Admin = () => {
 
   useAuth(user, "Admin")
 
-  const handleDeleteAppointment = async (id) => {
+  const handleDeleteUsers = async (id) => {
 
     try {
       setErrorUsers(false)
-      await fetchDeleteUser(id)
-      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
       setLoadingUsers(true)
+      await fetchDeleteUser(id)
+      await fetchUsers()
+      // setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
     }
     catch {
       setErrorUsers(true)
@@ -50,25 +51,23 @@ const Admin = () => {
     fetchSpecialty();
   }, [])
 
+  const fetchUsers = async () => {
+    const query = new URLSearchParams();
+    if (stateFiltered) query.append('state', stateFiltered);
+    try {
+      setErrorUsers(false);
+      setLoadingUsers(true);
+
+      const res = await fetchFilteredUsers(query);
+
+      setUsers(res);
+    } catch (error) {
+      setErrorUsers(true);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
   useEffect(() => {
-    const fetchUsers = async () => {
-      const query = new URLSearchParams();
-      if (stateFiltered) query.append('state', stateFiltered);
-      try {
-        setErrorUsers(false);
-        setLoadingUsers(true);
-
-        const res = await fetchFilteredUsers(query);
-
-        setUsers(res);
-      } catch (error) {
-        setErrorUsers(true);
-      } finally {
-        setLoadingUsers(false);
-      }
-    };
-
-
 
     fetchUsers();
   }, [stateFiltered]);
@@ -78,7 +77,7 @@ const Admin = () => {
       icon: 'ban',
       color: 'danger',
       disable: user.status === 'Inactivo',
-      onClick: () => handleDeleteAppointment(user.id),
+      onClick: () => handleDeleteUsers(user.id),
     },
   ]);
 
