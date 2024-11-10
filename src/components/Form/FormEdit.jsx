@@ -22,7 +22,6 @@ const FormEditProfile = ({ open, setOpen, userEdit }) => {
 
     useEffect(() => {
         if (userEdit) {
-            console.log(userEdit)
             setFormData({
                 name: userEdit.name || '',
                 lastName: userEdit.lastName || '',
